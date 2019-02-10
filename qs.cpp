@@ -3,55 +3,26 @@
 
 using namespace std;
 
-int partition(int arr[],int l,int h)
-{
-	//taking a pivot value
-	int pt=h;
-	h=h-1;
-	int temp;
-
-	//initializing an element
-	int fact=1;
-	
-	//creating while loop
-	while(fact)
-	{
-		//loop to check whether no.s of arrays are smaller than the pivoted value
-		while( (l<=h ) && (arr[l]<=arr[pt]) )
-			l+=1;
-
-		//loop to create whether no. s of arrays are greater then the pivoted value
-		while( (arr[h]>=arr[pt]) && (h>=l) )
-			h-=1;
-
-		//checking conditions
-		if(h<l)
-			fact=0;
-		//swapping of lowest and highest values
-		else
-			int temp = arr[l];
-			arr[l] = arr[h-1];
-			arr[h-1] = temp;
-	}
-
-	//swapping pivoted value with it's just larger value
-	temp = arr[pt];
-	arr[pt] = arr[h-1];
-	arr[h-1] = temp;
-
-	//returning the value
-	return h;
-}
-
 //create function to workout quicksort
 void QS(int arr[],int l,int h)
 {
-	//conditions applied
-	if(l<h)
+	//conditions applied if only one element is left
+	if(l<1)
 	{
-		//call funtion partition
-		int p=partition(int arr[],int l,int h);
-
+		int p=1,temp;
+		for(int i=h-1;i>=l;i--)
+		{
+			if(arr[i]>arr[p])
+			{
+				temp=arr[i];
+				for(int j=i;j<p;j++)
+				{
+					arr[j]=arr[j+1];
+				}
+				arr[p]=temp;
+				p--;
+			}
+		}
 		//recursion
 		QS(int arr[],int l,int p-1);
 		QS(int arr[],int p+1,int h);
@@ -63,24 +34,34 @@ void QS(int arr[],int l,int h)
 int main()
 {
 	//creating array
-	int arr[5]={1,5,2,4,3};
-
-	//initializing variables for quick sorting
-	int l=0;
-	int h=4;
+	int n;
+	
+	//ask for size of array
+	cout<<"Enter the sie of array ";
+	cin>>n;
+	
+	//declaring the array
+	int arr[n];
+	
+	//ask for input in the array
+	for(int i=0;i<n;i++)
+	{
+		cout<<"Enter the "<<i+1<<" th element ";
+		cin>>arr[i];
+	}
 
 	//print the unarranged array
-	for(int i=0;i<5;i++)
+	for(int i=0;i<n;i++)
 	{
 		cout<<arr[i]<<" ";
 	}
 	cout<<endl;
 
 	//calling function quicksort for sorting the array
-	QS(int arr[],int l,int h);
+	QS(arr[],0,n-1);
 
 	//print the sorted array
-	for(int i=0;i<5;i++)
+	for(int i=0;i<n;i++)
 	{
 		cout<<arr[i]<<" ";
 	}
